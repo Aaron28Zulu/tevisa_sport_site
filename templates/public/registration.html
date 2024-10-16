@@ -1,0 +1,64 @@
+{% extends './public/base.html' %}
+
+{% block title %}Registraion{% endblock %}
+
+{% block content %}
+
+<div class="container bg-dark my-3">
+    <ul class="nav justify-content-center nav-fill">
+        <li class="nav-item">
+            <a class="nav-link link-light current-page" href="#">Institution</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light" href="/team_registration">Team</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-light" href="./player_registration">Player</a>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Form -->
+
+<div class="container d-flex justify-content-center">
+    <form action="#" class="border p-5" method="post">
+        <div class="mb-3">
+            <label for="instName" class="form-label">Institution Name:</label>
+            <select class="form-select" name="Institution" id="instName" required>
+                <option value="ZUT">Zambia University College of Technology</option>
+                <option value="MUKUNI" class="input-bar">Mukuba University</option>
+                <option value="UNZA" class="input-bar">University of Zambia</option>
+                <option value="CBU" class="input-bar">Copperbelt University</option>
+                <option value="MU" class="input-bar">Mulungushi University</option>
+                <option value="UNILUS" class="input-bar">University of Lusaka</option>
+                <option value="LAMMU" class="input-bar">Levy Mwanawasa Medical University</option>
+                <option value="EvelynHone" class="input-bar">Evelyn Hone College</option>
+                <option value="Baobab" class="input-bar">Baobab College</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="town" class="form-label">City/Town:</label>
+            <input type="text" id="town" class="form-control" name="institution_town" required>
+        </div>
+        <!-- <div class="mb-3">
+            <label for="Sport" class="form-label">Sport</label><br>
+            <select id="Sport" class="form-select" name="Sport" aria-placeholder="Select sport" required>
+                <option value="football" class="input-bar">Football</option>
+                <option value="Basketball" class="input-bar">Basketball</option>
+                <option value="Volleyball" class="input-bar">Volleyball</option>
+                <option value="football" class="input-bar">Football</option>
+                <option value="Basketball" class="input-bar">Basketball</option>
+                <option value="Volleyball" class="input-bar">Volleyball</option>
+                <option value="football" class="input-bar">Football</option>
+                <option value="Basketball" class="input-bar">Basketball</option>
+                <option value="Volleyball" class="input-bar">Volleyball</option>
+            </select>
+        </div> -->
+        <div class="d-flex justify-content-center">
+            <input type="submit" value="Next" class="px-5 btn btn-dark">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
