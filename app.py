@@ -1,9 +1,12 @@
-from flask import Flask, render_template, redirect, request, url_for
+from flask import Flask, render_template, redirect, request, url_for, flash
 from psycopg2.errors import UniqueViolation
+from time import sleep
 
-from database_connection import DatabaseConnection
+from utils.database_connection import DatabaseConnection
+from utils.tournament_manager import TournamentManager
 
 app = Flask(__name__)
+app.secret_key = "just a dummy key"
 
 
 # try:
@@ -22,11 +25,30 @@ app = Flask(__name__)
 
 
 INSTITUTIONS = {
-    'ZUT': 'Zambia Institute Of Technology',
+    'ZUT': 'Zambia University of Technology',
     'ZAST': 'Zambia Air Services Training',
     'NORTEC': 'Northern Technical College',
     'EVHONE': 'Evelyn Hone College',
-    'LBTC': 'Lusaka Business And Technical College'
+    'LBTC': 'Lusaka Business And Technical College',
+    'NIC': 'Nkumbi International College',
+    'LIBES': 'Livingstone institute of Business And Engineering Studies',
+    'COTBC': 'Copperbelt Technical Business College',
+    'MATTI': 'Mansa Trades Training institute',
+    'MOTTI': 'Mongu Trades Training Institute',
+    'CHTTI': 'Chipata Trades Training Institute',
+    'SOTTI': 'Solwezi Trades Training Institute',
+    'PETTI': 'Pemba Trades Training Institute',
+    'KATTI': 'Kaoma Trades Training institute',
+    'NCTTI': 'Nchanga Trades Training Institute',
+    'KVTC': 'Kitwe Vocational Training Centre',
+    'KIT': 'Kabwe Institue Of Technology',
+    'LTBT': 'Luanshya Technical and business Training',
+    'CHITTI': 'Chinsali Trades Training Institute',
+    'ZIBST': 'Zambia Institute Of Business Studies and Technology',
+    'MTC': 'Mufulira Technical College',
+    'CU': 'Cavendish University',
+    'CHRESO': 'Chreso University',
+    'ZASTI': 'Zambia Air Services Training Institute'
 }
 
 
@@ -66,19 +88,22 @@ def main() -> None:
                                 """)
 
                     cur.execute(insert_query, record_to_insert)
+                flash(f"{institution_name} successfully registered!", "success")
+
             except UniqueViolation as e:
 
-                return f'A Duplicate Record Already Exists<br />Error: {e}'
+                flash(f"{institution_name} is already registered!", "danger")
+                # return render_template('./public/registration.html', INSTITUTIONS=INSTITUTIONS)
 
             return redirect(url_for('add_team'))
         else:
-            return render_template('./public/registration.html')
+            return render_template('./public/registration.html', INSTITUTIONS=INSTITUTIONS)
 
 
     @app.route('/team_registration', methods=['GET', 'POST'])
     def add_team():
         if request.method == 'GET':
-            return render_template('./public/team_register.html')
+            return render_template('./public/team_register.html', INSTITUTIONS=INSTITUTIONS)
         else:
             team_name = request.form['team_name']
             institution = request.form['Institution']
@@ -91,6 +116,7 @@ def main() -> None:
                 if not cur.fetchall():
                     cur.execute("ALTER SEQUENCE public.coach_coach_id_seq RESTART WITH 1")
 
+                # noinspection PyBroadException
                 try:
                     cur.execute(f"INSERT INTO coach(coach_name) VALUES('{coach_name}');")
                 except:
@@ -109,6 +135,7 @@ def main() -> None:
                     cur.execute(f"SELECT coach_id FROM coach WHERE coach_name='{coach_name}'")
                     coach_id = cur.fetchone()[0]
 
+                    # noinspection PyBroadException
                     try:
                         cur.execute(f"SELECT institution_id FROM institution WHERE institution_name='{institution}'")
                         institution_id = cur.fetchone()[0]
@@ -121,7 +148,7 @@ def main() -> None:
                     # return f'{str(coach_id)}<br>{institution_id}<br>{tournament_id}'
 
 
-                    record_to_insert = (team_name, institution_id, coach_id, 2) # tournament_id -> 2
+                    record_to_insert = (team_name, institution_id, coach_id, tournament_id) # tournament_id -> 2
                     # #
                     insert_query = """INSERT INTO teams(team_name, institution_id, coach_id, tournament_id) VALUES(%s, %s, %s, %s)"""
 
@@ -137,7 +164,7 @@ def main() -> None:
                 return e
             return redirect(url_for('add_player'))
 
-
+    # noinspection PyBroadException
     @app.route('/player_registration', methods=['GET', 'POST'])
     def add_player():
         if request.method == 'GET':
@@ -176,10 +203,23 @@ def main() -> None:
 
 
     @app.route('/tournaments/<int:tournament_id>')
-    def tournament(tournament_id):
+    def tournament():
         pass
 
 
+    @app.route('/sports')
+    def sport():
+        return render_template('./public/fixtures/index.html')
+
+
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('./public/errors/404.html'), 404
+
+
 if __name__ == '__main__':
+    admin = TournamentManager()
+    # admin.insert_tournament(('ZUT TNMT', '2024-12-16', '2024-12-28',))
+    # admin.delete_tournament('Youth Tournament')
     main()
     app.run(debug=True)

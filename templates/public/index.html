@@ -1,11 +1,11 @@
-{% extends './public/base.html'%}
+{% extends './public/base.html' %}
 
 {% block title %}Home - Tevisa{% endblock %}
 
 {% block content %}
 
 <div class="container d-flex justify-content-center my-2">
-    <img src="https://placehold.co/2300x1170" style="border-radius: 1.4em;" alt="" class="img-fluid">
+    <img src="{{ url_for('static', filename='/img/landing_img.jpg') }}" style="border-radius: 1.4em;" alt="" class="img-fluid" id="landing-page-img">
 </div>
 <div class="container d-flex justify-content-end my-3">
     <div class="row">
