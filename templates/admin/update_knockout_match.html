@@ -1,0 +1,18 @@
+<!-- templates/admin/update_knockout_match.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Update Knockout Match Winner</h2>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.winner.label(class="form-control-label") }}
+        {{ form.winner(class="form-control") }}
+        {% for error in form.winner.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {{ form.submit(class="btn btn-success") }}
+</form>
+{% endblock %}

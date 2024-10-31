@@ -1,6 +1,7 @@
-from flask import Flask, render_template, redirect, request, url_for, flash
+from flask import Flask, render_template, redirect, request, url_for, flash, session
+from flask_bcrypt import Bcrypt
 from psycopg2.errors import UniqueViolation
-from time import sleep
+from admin import init_app as init_admin_blueprint
 
 from utils.database_connection import DatabaseConnection
 from utils.tournament_manager import TournamentManager
@@ -8,6 +9,7 @@ from utils.tournament_manager import TournamentManager
 app = Flask(__name__)
 app.secret_key = "just a dummy key"
 
+bcrypt = Bcrypt(app)
 
 # try:
 #     # Connection to Database | DatabaseConnection as context manager
@@ -53,6 +55,9 @@ INSTITUTIONS = {
 
 
 def main() -> None:
+
+    init_admin_blueprint(app)
+
     @app.route('/')
     def home():
         return render_template('./public/index.html')
@@ -92,8 +97,7 @@ def main() -> None:
 
             except UniqueViolation as e:
 
-                flash(f"{institution_name} is already registered!", "danger")
-                # return render_template('./public/registration.html', INSTITUTIONS=INSTITUTIONS)
+                flash(f"{institution_name} is already registered!", "warning")
 
             return redirect(url_for('add_team'))
         else:
@@ -157,9 +161,11 @@ def main() -> None:
                         cur.execute("ALTER SEQUENCE public.teams_team_id_seq RESTART WITH 1")
                     try:
                         cur.execute(insert_query, record_to_insert)
+                        flash(f"{team_name} added successfully!", "success")
                     except Exception as error:
                         print(error)
-                        return f'The team with name {team_name} already exists'
+                        flash(f"{team_name} alread exist", "warning")
+                        return redirect(url_for('add_player'))
             except Exception as e:
                 return e
             return redirect(url_for('add_player'))
@@ -192,6 +198,8 @@ def main() -> None:
                     ALTER SEQUENCE public.players_player_id_seq RESTART WITH 1                
                     """)
                 cur.execute(insert_query, record_to_insert)
+
+                flash(f"{player_name} added successfully", "success")
 
                 return redirect(url_for('add_player'))
 

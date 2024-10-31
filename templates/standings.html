@@ -1,0 +1,42 @@
+<!-- templates/standings.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Group Standings</h2>
+
+{% for group, teams in standings.items() %}
+    <h3>Group {{ group }}</h3>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>MP</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for team_info in teams %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ team_info.team.name }}</td>
+                <td>{{ team_info.matches_played }}</td>
+                <td>{{ team_info.wins }}</td>
+                <td>{{ team_info.draws }}</td>
+                <td>{{ team_info.losses }}</td>
+                <td>{{ team_info.goals_for }}</td>
+                <td>{{ team_info.goals_against }}</td>
+                <td>{{ team_info.goal_difference }}</td>
+                <td>{{ team_info.points }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,43 @@
+<!-- templates/admin/dashboard.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<h3>Institutions and Team Counts</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Institution ID</th>
+            <th>Institution Name</th>
+            <th>Number of Teams</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for institution in institutions %}
+        <tr>
+            <td>{{ institution.id }}</td>
+            <td>{{ institution.name }}</td>
+            <td>{{ institution.teams|length }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Buttons to assign groups and setup knockout -->
+<form method="POST" action="{{ url_for('assign_groups') }}">
+    <button type="submit" class="btn btn-primary">Assign Teams to Groups</button>
+</form>
+
+<hr>
+
+<form method="POST" action="{{ url_for('setup_knockout') }}">
+    <button type="submit" class="btn btn-danger">Setup Knockout Stage</button>
+</form>
+
+<hr>
+
+<a href="{{ url_for('manage_fixtures') }}" class="btn btn-secondary">Manage Fixtures</a>
+<a href="{{ url_for('calculate_standings_route') }}" class="btn btn-info">View Standings</a>
+<a href="{{ url_for('knockout_stage') }}" class="btn btn-success">View Knockout Stage</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Welcome to the Sports Tournament!</h1>
+    <p class="lead">Register your institution, teams, and players to participate in the tournament.</p>
+    <hr class="my-4">
+    <p>Choose an option below to get started.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('register_institution') }}" role="button">Register Institution</a>
+    <a class="btn btn-secondary btn-lg" href="{{ url_for('register_team') }}" role="button">Register Team</a>
+    <a class="btn btn-success btn-lg" href="{{ url_for('register_player') }}" role="button">Register Player</a>
+</div>
+{% endblock %}

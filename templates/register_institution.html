@@ -1,0 +1,19 @@
+<!-- templates/register_institution.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Register Institution</h2>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.name.label(class="form-control-label") }}
+        {{ form.name(class="form-control") }}
+        {{ form.town.label(class="form-control-label") }}
+        {{ form.town(class="form-control") }}
+        {% for error in form.name.errors %}
+            <span class="text-danger">{{ error }}</span>
+        {% endfor %}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

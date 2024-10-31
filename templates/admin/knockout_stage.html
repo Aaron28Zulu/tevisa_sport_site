@@ -1,0 +1,55 @@
+<!-- templates/admin/knockout_stage.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Knockout Stage</h2>
+
+{% if knockout_matches %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Match ID</th>
+                <th>Round</th>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Winner</th>
+                <th>Date & Time</th>
+                <th>Scores</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in knockout_matches %}
+            <tr>
+                <td>{{ match.id }}</td>
+                <td>{{ match.round }}</td>
+                <td>{{ match.team1.name }}</td>
+                <td>{{ match.team2.name }}</td>
+                <td>{{ match.winner.name if match.winner else 'N/A' }}</td>
+                <td>{{ match.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                <td>
+                    {% if match.score_team1 is not none and match.score_team2 is not none %}
+                        {{ match.score_team1 }} - {{ match.score_team2 }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('update_knockout_match', match_id=match.id) }}" class="btn btn-primary btn-sm">Update Winner</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Button to progress the knockout stage -->
+    {% if 'Final' not in [match.round for match in knockout_matches] %}
+        <form method="POST" action="{{ url_for('progress_knockout', current_round=knockout_matches[0].round) }}">
+            <button type="submit" class="btn btn-primary">Progress to Next Round</button>
+        </form>
+    {% endif %}
+{% else %}
+    <p>No knockout matches have been set up yet.</p>
+{% endif %}
+
+{% endblock %}
