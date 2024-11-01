@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, url_for, flash, ses
 from flask_bcrypt import Bcrypt
 from psycopg2.errors import UniqueViolation
 from admin import init_app as init_admin_blueprint
+from admin.routes import tournament_manager, group_manager
 
 from utils.database_connection import DatabaseConnection
 from utils.tournament_manager import TournamentManager
@@ -10,6 +11,7 @@ app = Flask(__name__)
 app.secret_key = "just a dummy key"
 
 bcrypt = Bcrypt(app)
+
 
 # try:
 #     # Connection to Database | DatabaseConnection as context manager
@@ -107,7 +109,8 @@ def main() -> None:
     @app.route('/team_registration', methods=['GET', 'POST'])
     def add_team():
         if request.method == 'GET':
-            return render_template('./public/team_register.html', INSTITUTIONS=INSTITUTIONS)
+            tournaments = tournament_manager.list_tournaments()
+            return render_template('./public/team_register.html', INSTITUTIONS=INSTITUTIONS, tournaments=tournaments)
         else:
             team_name = request.form['team_name']
             institution = request.form['Institution']
@@ -174,7 +177,8 @@ def main() -> None:
     @app.route('/player_registration', methods=['GET', 'POST'])
     def add_player():
         if request.method == 'GET':
-            return render_template('./public/player_registration.html')
+            teams = group_manager.list_teams()
+            return render_template('./public/player_registration.html', teams = teams)
         else:
             player_name = request.form['player']
             player_age = request.form['age']

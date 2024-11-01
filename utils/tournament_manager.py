@@ -34,3 +34,24 @@ class TournamentManager:
             query = "UPDATE tournaments SET is_ended = TRUE WHERE tournament_name = %s;"
             cur.execute(query, (tournament_name,))
 
+
+    @classmethod
+    def update_tournament(cls, tournament_name, start_date, end_date, tournament_id):
+        with DatabaseConnection() as conn:
+            cur = conn.cursor()
+            cur.execute("""
+                        UPDATE tournament
+                        SET tournament_name = %s, start_date = %s, end_date = %s
+                        WHERE tournament_id = %s
+                    """, (tournament_name, start_date, end_date, tournament_id))
+
+
+
+    @classmethod
+    def list_tournaments(cls) -> []:
+        with DatabaseConnection() as connection:
+            cur = connection.cursor()
+            cur.execute("SELECT * FROM tournament")
+
+            return [{'id': row[0], 'name': row[1], 'start_date': row[2], 'end_date': row[3]} for row in cur.fetchall()]
+

@@ -1,4 +1,4 @@
-from database_connection import DatabaseConnection
+from .database_connection import DatabaseConnection
 
 
 class GroupManager:
@@ -33,7 +33,7 @@ class GroupManager:
 
 
     @classmethod
-    def remove_group(cls, group_name: str) -> None:
+    def delete_group(cls, group_name: str) -> None:
         """
         Removes the specified group from table
         :param group_name:
@@ -46,17 +46,23 @@ class GroupManager:
 
 
     @classmethod
-    def list_groups(cls):
+    def list_groups(cls) -> []:
         with DatabaseConnection() as connection:
             cur = connection.cursor()
-            cur.execute("SELECT * FROM groups")
-            group_list = cur.fetchall()
+            query = """
+                        SELECT groups.group_id, groups.group_name, tournament.tournament_name
+                        FROM groups
+                        JOIN tournament ON groups.tournament_id = tournament.tournament_id
+                    """
+            cur.execute(query)
 
-            print("*--------------*\n*----GROUPS----*\n*--------------*")
-            if not group_list:
-                print("No groups formed")
-            for group in group_list:
-                print(f"  \t{group[1]}")
+            # print("*--------------*\n*----GROUPS----*\n*--------------*")
+            # if not group_list:
+            #     print("No groups formed")
+            # for group in group_list:
+            #     print(f"  \t{group[1]}")
+
+            return [{'id': row[0], 'name': row[1], 'tournament': row[2]} for row in cur.fetchall()]
 
 
     @classmethod
@@ -69,7 +75,7 @@ class GroupManager:
 
             Parameters:
                 team_name (str): The name of the team to assign to a group.
-                to_group (int): The ID of the group to which the team should be assigned.
+                to_group (int, Any): The ID of the group to which the team should be assigned.
 
             Returns:
                 None
@@ -87,7 +93,39 @@ class GroupManager:
 
             cur.execute(query, (to_group, team_name))
 
-            print(f"Successfully added {team_name} to group")
+
+    @classmethod
+    def list_teams(cls):
+        with DatabaseConnection() as connection:
+            cur = connection.cursor()
+            query = """
+                        SELECT teams.team_name FROM teams
+                    """
+            cur.execute(query)
+
+            # print("*--------------*\n*----GROUPS----*\n*--------------*")
+            # if not group_list:
+            #     print("No groups formed")
+            # for group in group_list:
+            #     print(f"  \t{group[1]}")
+
+            return [{'name': row[0]} for row in cur.fetchall()]
+
+
+    @classmethod
+    def list_teams_with_groups(cls):
+        with DatabaseConnection() as conn:
+            cur = conn.cursor()
+            query = """
+                    SELECT teams.team_id, teams.team_name, COALESCE(groups.group_name, 'Not Assigned') AS group_name
+                    FROM teams
+                    LEFT JOIN groups ON teams.group_id = groups.group_id
+                """
+            cur.execute(query)
+
+            return [{'id': row[0], 'name': row[1], 'group': row[2]} for row in cur.fetchall()]
+
+
 
 test = GroupManager()
 
@@ -97,7 +135,7 @@ test = GroupManager()
 Add Group To Tournament Table
 # test.add_group('GROUP C', 2)
 Remove Group From Table
-test.remove_group('GROUP C')
+test.delete_group('GROUP C')
 List Groups
 test.list_groups()
 Add Team To Group Table

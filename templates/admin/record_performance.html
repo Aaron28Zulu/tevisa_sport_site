@@ -1,0 +1,25 @@
+<!-- templates/admin/record_performance.html -->
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Record Game Performance{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Record Team Performance</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="team_id" class="form-label">Team</label>
+            <select id="team_id" name="team_id" class="form-select">
+                {% for team in teams %}
+                <option value="{{ team[0] }}">{{ team[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="goals" class="form-label">Goals Scored</label>
+            <input type="number" class="form-control" id="goals" name="goals">
+        </div>
+        <button type="submit" class="btn btn-success">Record Performance</button>
+    </form>
+</div>
+{% endblock %}

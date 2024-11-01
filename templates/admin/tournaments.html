@@ -1,0 +1,95 @@
+<!-- templates/admin/tournaments.html -->
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Tournaments{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- Flash Messages Section -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="mt-3">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+    <h2>Tournaments</h2>
+    <p class="text-muted">Registered tournaments.</p>
+
+    <!-- Display tournaments -->
+    <div class="mt-4">
+        {% if tournaments %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tournament Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tournament in tournaments %}
+                        <tr>
+                            <td>{{ tournament.name }}</td>
+                            <td>{{ tournament.start_date }}</td>
+                            <td>{{ tournament.end_date }}</td>
+                            <td>
+                                <!-- Button to open edit modal -->
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal-{{ tournament.id }}">
+                                    Edit
+                                </button>
+
+                                <!-- Edit Tournament Modal -->
+                                <div class="modal fade" id="editModal-{{ tournament.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="editModalLabel">Edit Tournament</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form action="{{ url_for('admin_bp.show_tournaments') }}" method="POST">
+                                                <div class="modal-body">
+                                                    <input type="hidden" name="tournament_id" value="{{ tournament.id }}">
+                                                    <div class="mb-3">
+                                                        <label for="tournament_name" class="form-label">Tournament Name</label>
+                                                        <input type="text" class="form-control" id="tournament_name" name="tournament_name" value="{{ tournament.name }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="start_date" class="form-label">Start Date</label>
+                                                        <input type="date" class="form-control" id="start_date" name="start_date" value="{{ tournament.start_date }}" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="end_date" class="form-label">End Date</label>
+                                                        <input type="date" class="form-control" id="end_date" name="end_date" value="{{ tournament.end_date }}" required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-warning">No tournaments have been registered yet.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Bootstrap JavaScript Bundle (necessary for modals to function) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

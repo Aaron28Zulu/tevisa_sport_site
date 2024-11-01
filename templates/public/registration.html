@@ -26,6 +26,7 @@
         <div class="mb-3">
             <label for="instName" class="form-label">Institution Name:</label>
             <select class="form-select" name="Institution" id="instName" required>
+                <option value="" disabled selected>Select an institution</option>
                 {% for key, value in INSTITUTIONS.items() %}
                     <option value="{{ key }}">{{ value }}</option>
                 {% endfor %}

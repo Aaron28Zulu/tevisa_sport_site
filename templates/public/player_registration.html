@@ -41,7 +41,7 @@
 
                 <div class="mb-3">
                     <label for="player" class="form-label">Player Name:</label>
-                    <input type="text" id="player" class="form-control" style="width: 340px;" name="player" required>
+                    <input type="text" id="player" class="form-control" name="player" required>
                 </div>
 
                 <div class="mb-3">
@@ -52,16 +52,18 @@
                 <div class="mb-3">
                     <label for="gender" class="form-label">Gender:</label>
                     <select class="form-select" name="gender" id="gender" required>
+                        <option disabled selected>Select gender</option>
                         <option value="M">Male</option>
                         <option value="F" class="input-bar">Female</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="team" class="form-label">Select Team:</label>
-                    <select class="form-select" name="team" id="team" required>
-                        <option class="input-bar">TEAM A</option>
-                        <option class="input-bar">TEAM B</option>
-                        <option class="input-bar">TEAM C</option>
+                    <select class="form-control form-select" id="team" name="team" required>
+                        <option value="" disabled selected>Select team player belongs to</option>
+                        {% for team in teams %}
+                            <option>{{ team.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
