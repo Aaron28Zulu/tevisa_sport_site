@@ -1,0 +1,58 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Fixtures{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container mt-5">
+    <h1 class="text-center">Manage Game Scores</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Fixture List and Score Update Form -->
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Fixture ID</th>
+                        <th>Date</th>
+                        <th>Tournament</th>
+                        <th>Team 1</th>
+                        <th>Score</th>
+                        <th>Team 2</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fixture in fixtures %}
+                    <tr>
+                        <td>{{ fixture.id }}</td>
+                        <td>{{ fixture.date }}</td>
+                        <td>{{ fixture.tournament_name }}</td>
+                        <td>{{ fixture.team1_name }}</td>
+                        <td>
+                            <!-- Form to input/update score -->
+                            <form action="{{ url_for('admin_bp.update_score', fixture_id=fixture.id) }}" method="POST"
+                                class="form-inline">
+                                <input type="number" name="team1_score" value="{{ fixture.team1_score }}" min="0"
+                                    class="form-control mr-2" placeholder="Team 1">
+                                <span>:</span>
+                                <input type="number" name="team2_score" value="{{ fixture.team2_score }}" min="0"
+                                    class="form-control ml-2" placeholder="Team 2">
+                        </td>
+                        <td>{{ fixture.team2_name }}</td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Update Score</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

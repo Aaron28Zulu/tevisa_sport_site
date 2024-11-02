@@ -5,7 +5,6 @@
 
 {% block content %}
 <div class="container mt-4">
-
     <!-- Flash Messages Section -->
         {% with messages = get_flashed_messages(with_categories=true) %}
           {% if messages %}
@@ -22,6 +21,11 @@
 
     <h2>Tournaments</h2>
     <p class="text-muted">Registered tournaments.</p>
+
+    <!-- Button to open the Add Tournament Modal -->
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addTournamentModal">
+        Add Tournament
+    </button>
 
     <!-- Display tournaments -->
     <div class="mt-4">
@@ -41,11 +45,16 @@
                             <td>{{ tournament.name }}</td>
                             <td>{{ tournament.start_date }}</td>
                             <td>{{ tournament.end_date }}</td>
-                            <td>
-                                <!-- Button to open edit modal -->
+                            <td class="d-flex">
+                                <!-- Button to open Edit Tournament Modal -->
                                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal-{{ tournament.id }}">
                                     Edit
                                 </button>
+                                <form action="{{ url_for('admin_bp.delete_tournament', tournament_id=tournament.id) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger btn-sm mx-3">
+                                        Delete
+                                    </button>
+                                </form>
 
                                 <!-- Edit Tournament Modal -->
                                 <div class="modal fade" id="editModal-{{ tournament.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -87,6 +96,39 @@
         {% else %}
             <p class="text-warning">No tournaments have been registered yet.</p>
         {% endif %}
+    </div>
+</div>
+
+<!-- Add Tournament Modal -->
+<div class="modal fade" id="addTournamentModal" tabindex="-1" aria-labelledby="addTournamentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTournamentModalLabel">Add Tournament</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('admin_bp.show_tournaments') }}" method="POST">
+                <input type="hidden" name="add_tournament" value="1">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="tournament_name" class="form-label">Tournament Name</label>
+                        <input type="text" class="form-control" name="tournament_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="start_date" class="form-label">Start Date</label>
+                        <input type="date" class="form-control" name="start_date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="end_date" class="form-label">End Date</label>
+                        <input type="date" class="form-control" name="end_date" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Tournament</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

@@ -87,19 +87,20 @@ def main() -> None:
                         ALTER SEQUENCE public.institution_institution_id_seq RESTART WITH 1
                         """)
 
-                    insert_query = """INSERT INTO institution(institution_name, institution_town ) VALUES(%s, %s)"""
+                    else:
+                        cur.execute("""
+                                    SELECT setval('public.institution_institution_id_seq', 
+                                    (SELECT COALESCE(MAX(institution_id), 1) FROM institution))
+                                    """)
 
-                    cur.execute("""
-                                SELECT setval('public.institution_institution_id_seq', 
-                                (SELECT COALESCE(MAX(institution_id), 1) FROM institution))
-                                """)
+                    insert_query = """INSERT INTO institution(institution_name, institution_town ) VALUES(%s, %s)"""
 
                     cur.execute(insert_query, record_to_insert)
                 flash(f"{institution_name} successfully registered!", "success")
 
             except UniqueViolation as e:
 
-                flash(f"{institution_name} is already registered!", "warning")
+                flash(f"{institution_name} is already registered!", "danger")
 
             return redirect(url_for('add_team'))
         else:
@@ -147,7 +148,8 @@ def main() -> None:
                         cur.execute(f"SELECT institution_id FROM institution WHERE institution_name='{institution}'")
                         institution_id = cur.fetchone()[0]
                     except Exception:
-                        return 'Institution Not Registered<br />Register Institution First Before Registering Team and Players'
+                        flash("Institution not registered!", "danger")
+                        return redirect(url_for('add_team'))
 
                     cur.execute(f"SELECT tournament_id FROM tournament WHERE tournament_name='{tournament_entry}'")
                     tournament_id = cur.fetchone()[0]
@@ -167,11 +169,11 @@ def main() -> None:
                         flash(f"{team_name} added successfully!", "success")
                     except Exception as error:
                         print(error)
-                        flash(f"{team_name} alread exist", "warning")
-                        return redirect(url_for('add_player'))
+                        flash(f"{team_name} alread exist", "danger")
+                    return redirect(url_for('add_player'))
             except Exception as e:
-                return e
-            return redirect(url_for('add_player'))
+                print(e)
+                return redirect(url_for('add_player'))
 
     # noinspection PyBroadException
     @app.route('/player_registration', methods=['GET', 'POST'])

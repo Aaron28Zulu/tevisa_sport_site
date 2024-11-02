@@ -99,7 +99,7 @@ class GroupManager:
         with DatabaseConnection() as connection:
             cur = connection.cursor()
             query = """
-                        SELECT teams.team_name FROM teams
+                        SELECT  teams.team_id, teams.team_name, teams.group_id FROM teams
                     """
             cur.execute(query)
 
@@ -109,7 +109,7 @@ class GroupManager:
             # for group in group_list:
             #     print(f"  \t{group[1]}")
 
-            return [{'name': row[0]} for row in cur.fetchall()]
+            return [{'team_id': row[0], 'name': row[1], 'group_id': row[2]} for row in cur.fetchall()]
 
 
     @classmethod
