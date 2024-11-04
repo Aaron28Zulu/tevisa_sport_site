@@ -223,7 +223,7 @@ def main() -> None:
 
     @app.route('/sports')
     def sport():
-        return render_template('./public/fixtures/index.html')
+        return render_template('./public/sports.html')
 
 
     @app.errorhandler(404)

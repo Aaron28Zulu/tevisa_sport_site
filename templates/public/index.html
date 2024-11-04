@@ -2,10 +2,146 @@
 
 {% block title %}Home - Tevisa{% endblock %}
 
+{% block home %} selected {% endblock %}
+
 {% block content %}
 
-<div class="container d-flex justify-content-center my-2">
-    <img src="{{ url_for('static', filename='/img/landing_img.jpg') }}" style="border-radius: 1.4em;" alt="" class="img-fluid" id="landing-page-img">
+<!-- Hero Section -->
+<header class="bg-dark text-white text-center py-5"
+    style="background: url('static/img/landing_img.jpg') no-repeat center center; background-size: cover; height: 60vh;">
+    <div class="container pt-md-5">
+        <h1 class="display-1 pt-md-5 mt-md-5">Welcome to TEVISA</h1>
+        <p class="lead">Empowering Sports in Zambia's Technical and Vocational Institutions</p>
+        <a href="#tournaments" class="btn btn-light btn-lg mt-3">View Tournaments</a>
+    </div>
+</header>
+
+<div class="container d-flex justify-content-end my-3 pt-3">
+    <div class="row">
+        <div class="col-sm-10">
+            <hr>
+            <p class="lead">
+                Students are free to register in a sports discipline of interest with the patron. Currently the
+                available
+                sports disciplines are Netball, Chess, Football, Volleyball and Basketball.
+                Students travel to different colleges in Zambia to take part in tournaments like TEVISA games,
+                Heroes &
+                unity games, independence Games, ZAFUCCS games. Additionally, students also participate in
+                international
+                tournaments in neighboring countries under SADC like Namibia, Botswana & Swaziland.
+            </p>
+        </div>
+        <div class="col-sm-2">
+            <div class="row justify-content-end align-items-center">
+                <div class="col-sm-8">
+                    <a href="/inst_registration">
+                        <div class="btn btn-dark my-md-4 btn-outline-light">Register Now</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr>
+    </div>
+</div>
+
+<!-- Tournaments Section -->
+<section id="tournaments" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Upcoming Tournaments</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="static/images/tournament1.jpg" class="card-img-top" alt="Tournament 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Spring Sports Festival</h5>
+                        <p class="card-text">April 5 - April 15, 2024</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="static/images/tournament2.jpg" class="card-img-top" alt="Tournament 2">
+                    <div class="card-body">
+                        <h5 class="card-title">National Tech Games</h5>
+                        <p class="card-text">May 10 - May 20, 2024</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <img src="static/images/tournament3.jpg" class="card-img-top" alt="Tournament 3">
+                    <div class="card-body">
+                        <h5 class="card-title">Summer Youth Championships</h5>
+                        <p class="card-text">June 5 - June 12, 2024</p>
+                        <a href="#" class="btn btn-outline-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Latest News Section -->
+<section id="news" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Latest News</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="static/images/news1.jpg" class="card-img-top" alt="News 1">
+                    <div class="card-body">
+                        <h5 class="card-title">TEVISA Hosts Annual Coaches Workshop</h5>
+                        <p class="card-text">Over 100 coaches gathered for a workshop on sports management, physical
+                            fitness, and the future of sports in Zambia.</p>
+                        <a href="#" class="btn btn-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <img src="static/images/news2.jpg" class="card-img-top" alt="News 2">
+                    <div class="card-body">
+                        <h5 class="card-title">Spring Sports Festival Kicks Off</h5>
+                        <p class="card-text">Students from across Zambia's vocational institutions gear up to
+                            compete in this year’s highly anticipated tournament.</p>
+                        <a href="#" class="btn btn-link">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="py-5 bg-dark text-white">
+    <div class="container">
+        <h2 class="text-center mb-5">Contact Us</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Headquarters</h5>
+                <p>Lusaka, Zambia<br>Email: info@tevisa.org.zm<br>Phone: +260 211 1234567</p>
+            </div>
+            <div class="col-md-6">
+                <h5>Follow Us</h5>
+                <a href="#" class="text-white me-3"><i class="bi bi-facebook"></i> Facebook</a>
+                <a href="#" class="text-white me-3"><i class="bi bi-twitter"></i> Twitter</a>
+                <a href="#" class="text-white"><i class="bi bi-instagram"></i> Instagram</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center py-3 bg-dark text-white">
+
+
+    {% endblock %}
+
+    <!-- <div class="container d-flex justify-content-center my-2">
+    <img src="{{ url_for('static', filename='/img/landing_img.jpg') }}" style="border-radius: 1.4em;" alt=""
+        class="img-fluid" id="landing-page-img">
 </div>
 <div class="container d-flex justify-content-end my-3">
     <div class="row">
@@ -31,6 +167,4 @@
             </div>
         </div>
     </div>
-</div>
-
-{% endblock %}
+</div> -->

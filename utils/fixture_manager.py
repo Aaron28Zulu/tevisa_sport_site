@@ -44,3 +44,28 @@ class FixtureManager:
                     VALUES (%s, %s, %s, %s)
                 """
             cur.execute(query, (fixture_date, tournament_id, team1_id, team2_id))
+
+
+            # Regiter fixture to scores_results table
+            cur.execute("SELECT fixture_id FROM fixtures WHERE fixture_date=%s", (fixture_date,))
+
+            fixture_id = cur.fetchall()[0]
+            cur.execute("SELECT * FROM scores_results")
+
+            if cur.fetchall():
+                cur.execute("""
+                            SELECT setval('public.scores_results_score_id_seq', 
+                            (SELECT COALESCE(MAX(score_id), 1) FROM scores_results))
+                            """)
+            else:
+                cur.execute("ALTER SEQUENCE public.scores_results_score_id_seq RESTART WITH 1")
+            cur.execute("INSERT INTO scores_results(fixture_id, team1_score, team2_score) VALUES (%s, %s, %s)", (fixture_id, 0, 0))
+
+
+    @classmethod
+    def delete_fixture(cls, fixture_id):
+        with DatabaseConnection() as conn:
+            cur = conn.cursor()
+
+            query = "DELETE FROM fixtures WHERE fixture_id=%s"
+            cur.execute(query, fixture_id)

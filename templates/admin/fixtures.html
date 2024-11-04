@@ -2,6 +2,8 @@
 
 {% block title %}Manage Fixtures{% endblock %}
 
+{% block fixtures %}selected{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <!-- Flash Messages Section -->
@@ -91,10 +93,16 @@
                     <td>{{ fixture.team1_name }}</td>
                     <td>{{ fixture.team2_name }}</td>
                     <td>
-                        <a href="{{ url_for('admin_bp.edit_fixture', fixture_id=fixture.id) }}"
+                        <form action="{{ url_for('admin_bp.delete_fixture', fixture_id=fixture.id) }}" method="POST"
+                            class="m-0 p-0">
+
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+
+                        <!-- <a href="{{ url_for('admin_bp.edit_fixture', fixture_id=fixture.id) }}"
                             class="btn btn-sm btn-warning">Edit</a>
                         <a href="{{ url_for('admin_bp.delete_fixture', fixture_id=fixture.id) }}"
-                            class="btn btn-sm btn-danger">Delete</a>
+                            class="btn btn-sm btn-danger">Delete</a> -->
                     </td>
                 </tr>
                 {% endfor %}

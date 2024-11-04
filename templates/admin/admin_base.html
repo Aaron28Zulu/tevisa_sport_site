@@ -1,4 +1,3 @@
-<!-- templates/admin/base_admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,52 +19,111 @@
         .sidebar {
             background-color: #343a40;
             color: #fff;
-            padding: 2rem 1rem;
+            padding: 1rem;
             min-width: 250px;
+            transition: all 0.3s;
         }
 
-        .sidebar h2 {
-            font-size: 1.5rem;
-            color: #3afd09;
+        .sidebar.collapsed {
+            min-width: 70px;
         }
 
-        .content {
-            padding: 2rem;
-            width: 100%;
+        .selected {
+            text-decoration: underline;
+            color: #343a40;
+        }
+
+        .sidebar h2,
+        .sidebar .nav-link {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .sidebar h2.collapsed {
+            display: none;
+        }
+
+        .sidebar .nav-link {
+            color: #fff;
+            padding: 0.75rem;
+            display: block;
+            transition: padding 0.3s;
+        }
+
+        .sidebar.collapsed .nav-link {
+            padding: 0.5rem;
+            text-align: center;
         }
 
         .footer {
             margin-top: auto;
             padding: 1rem;
-            text-align: center;
             font-size: 0.85rem;
             color: #6c757d;
+        }
+
+        .sidebar-toggler {
+            display: none;
+            color: #000000;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: absolute;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1050;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggler {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                left: 1rem;
+                z-index: 1100;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="dashboard-container">
+        <!-- Sidebar Toggle Button for small screens -->
+        <span class="sidebar-toggler d-md-none" onclick="toggleSidebar()">☰</span>
+
         <!-- Sidebar -->
-        <div class="sidebar">
-            <h2><a href="{{ 'admin_dashboard' }}" class="nav-link" rel="noopener noreferrer">Admin Panel</a></h2>
+        <div id="sidebar" class="sidebar">
+            <h2 id="sidebar-title"><a href="{{ 'admin_dashboard' }}" class="nav-link" rel="noopener noreferrer">Admin
+                    Panel</a></h2>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ url_for('admin_bp.show_tournaments') }}">
-                        Manage Tournaments
-                    </a>
+                    <a class="nav-link {% block tournaments %}{% endblock %} text-light"
+                        href="{{ url_for('admin_bp.show_tournaments') }}">Manage
+                        Tournaments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ url_for('admin_bp.show_teams') }}">Manage Teams</a>
+                    <a class="nav-link {% block teams %}{% endblock %} text-light"
+                        href="{{ url_for('admin_bp.show_teams') }}">Manage Teams</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ url_for('admin_bp.register_group') }}">Manage Groups</a>
+                    <a class="nav-link {% block groups %}{% endblock %} text-light"
+                        href="{{ url_for('admin_bp.register_group') }}">Manage Groups</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ url_for('admin_bp.manage_fixtures') }}">Manage Fixtures</a>
+                    <a class="nav-link {% block fixtures %}{% endblock %} text-light"
+                        href="{{ url_for('admin_bp.manage_fixtures') }}">Manage Fixtures</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-light" href="{{ url_for('admin_bp.manage_scores') }}">Manage Scores</a>
+                    <a class="nav-link {% block scores %}{% endblock %} text-light"
+                        href="{{ url_for('admin_bp.manage_scores') }}">Manage Scores</a>
                 </li>
             </ul>
             <div class="footer">
@@ -74,15 +132,19 @@
         </div>
 
         <!-- Main Content Area -->
-        <div class="content">
+        <div class="content p-4 w-100">
             {% block content %}{% endblock %}
         </div>
     </div>
+
     <!-- CDN bootstrap js-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+    </script>
 </body>
 
 </html>

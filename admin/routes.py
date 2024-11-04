@@ -306,13 +306,9 @@ def edit_fixture(fixture_id):
     return render_template('admin/edit_fixture.html', fixture=fixture)
 
 # 3. Endpoint to Delete a Fixture
-@admin_bp.route('/delete_fixture/<int:fixture_id>', methods=['POST'])
+@admin_bp.route('/delete_fixture/<fixture_id>', methods=['POST'])
 def delete_fixture(fixture_id):
-    with DatabaseConnection() as conn:
-        cur = conn.cursor()
-        cur.execute("DELETE FROM fixtures WHERE fixture_id = %s", (fixture_id,))
-        conn.commit()
-
+    fixture_manager.delete_fixture(fixture_id)
     flash("Fixture deleted successfully!", "success")
     return redirect(url_for('admin_bp.manage_fixtures'))
 

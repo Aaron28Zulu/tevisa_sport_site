@@ -2,6 +2,8 @@
 
 {% block title %}Registraion{% endblock %}
 
+{% block registration %} selected {% endblock %}
+
 {% block content %}
 
 <div class="container bg-dark my-3">
@@ -28,7 +30,7 @@
             <select class="form-select" name="Institution" id="instName" required>
                 <option value="" disabled selected>Select an institution</option>
                 {% for key, value in INSTITUTIONS.items() %}
-                    <option value="{{ key }}">{{ value }}</option>
+                <option value="{{ key }}">{{ value }}</option>
                 {% endfor %}
             </select>
         </div>

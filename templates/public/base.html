@@ -8,47 +8,50 @@
         {% block title %} {% endblock %}
     </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<!--    <link rel="stylesheet" href="static/css/bootstrap.css">-->
     <link rel="stylesheet" href="static/css/style.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='basketball.ico') }}">
 </head>
 
 <body>
-    <nav class="navbar bg-body-tertiary">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
+            <!-- Brand -->
             <a class="navbar-brand mx-5" href="/">TEVISA</a>
 
-            <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <a class="nav-link active link-dark" aria-current="page" href="/">Home</a>
-                </li>
-                <li class="nav-item text-dark">
-                    <a class="nav-link link-dark" href="./sports">Sport</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-dark" href="./about">About Tevisa</a>
-                </li>
+            <!-- Toggler for Small Screens -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <li class="nav-item">
-                    <a class="nav-link link-dark" href="./inst_registration">Registraion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-dark" aria-disabled="true"></a>
-                </li>
-            </ul>
+            <!-- Collapsible Section with Centered Links on Small Screens -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto text-center"> <!-- Center nav links on small screens -->
+                    <li class="nav-item">
+                        <a class="nav-link active {% block home %} {% endblock %} link-dark" aria-current="page"
+                            href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block sport %} {% endblock %} link-dark" href="./sports">Sport</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block about %} {% endblock %} link-dark" href="./about">About Tevisa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% block registration %} {% endblock %} link-dark"
+                            href="./inst_registration">Registration</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
-    {% block content %}
+    <!-- Content -->
+    {% block content %}{% endblock %}
 
-    {% endblock %}
-
-
+    <!-- Bootstrap JS Bundle with Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<!-- CDN bootstrap js-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- FILE bootstrap js-->
-<!--<script src="static/js/bootstrap.js"></script>-->
 
 </html>
