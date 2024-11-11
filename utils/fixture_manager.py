@@ -15,13 +15,16 @@ class FixtureManager:
                         JOIN teams team2 ON f.team2_id = team2.team_id
                     """)
 
+
+            # print(cur.fetchall())
             return [
                         {
                             'id': row[0],
                             'date': row[1],
-                            'tournament_name': row[2],
+                            'tournament_id': row[2],
                             'team1_name': row[3],
                             'team2_name': row[4],
+                            'tournament_name': row[5]
                         }
                         for row in cur.fetchall()
                     ]
@@ -60,6 +63,45 @@ class FixtureManager:
             else:
                 cur.execute("ALTER SEQUENCE public.scores_results_score_id_seq RESTART WITH 1")
             cur.execute("INSERT INTO scores_results(fixture_id, team1_score, team2_score) VALUES (%s, %s, %s)", (fixture_id, 0, 0))
+
+
+    @classmethod
+    def get_game_results(cls):
+        with DatabaseConnection() as conn:
+            cur = conn.cursor()
+            query = """
+                SELECT 
+                    f.fixture_date AS date,
+                    t1.team_name AS team1,
+                    s.team1_score,
+                    t2.team_name AS team2,
+                    s.team2_score
+                FROM 
+                    fixtures f
+                JOIN 
+                    scores_results s ON f.fixture_id = s.fixture_id
+                JOIN 
+                    teams t1 ON f.team1_id = t1.team_id
+                JOIN 
+                    teams t2 ON f.team2_id = t2.team_id;
+                """
+            cur.execute(query)
+
+            results = cur.fetchall()
+
+            # Format the results as a list of dictionaries
+            game_results = [
+                {
+                    "date": result[0],
+                    "team1": result[1],
+                    "team1_score": result[2],
+                    "team2": result[3],
+                    "team2_score": result[4]
+                }
+                for result in results
+            ]
+
+            return game_results
 
 
     @classmethod

@@ -126,24 +126,47 @@ class GroupManager:
             return [{'id': row[0], 'name': row[1], 'group': row[2]} for row in cur.fetchall()]
 
 
+    # GROUP STANDINGS LOGIC
+    @classmethod
+    def get_group_standings(cls):
+        with DatabaseConnection() as conn:
+            cur = conn.cursor()
+            query = """
+                SELECT 
+                    t.team_name AS Team,
+                    COUNT(f.fixture_id) AS Played,
+                    SUM(CASE WHEN (t.team_id = f.team1_id AND s.team1_score > s.team2_score) OR (t.team_id = f.team2_id AND s.team2_score > s.team1_score) THEN 1 ELSE 0 END) AS Won,
+                    SUM(CASE WHEN s.team1_score = s.team2_score THEN 1 ELSE 0 END) AS Drawn,
+                    SUM(CASE WHEN (t.team_id = f.team1_id AND s.team1_score < s.team2_score) OR (t.team_id = f.team2_id AND s.team2_score < s.team1_score) THEN 1 ELSE 0 END) AS Lost,
+                    (SUM(CASE WHEN (t.team_id = f.team1_id AND s.team1_score > s.team2_score) OR (t.team_id = f.team2_id AND s.team2_score > s.team1_score) THEN 3 ELSE 0 END) +
+                     SUM(CASE WHEN s.team1_score = s.team2_score THEN 1 ELSE 0 END)) AS Points
+                FROM 
+                    fixtures f
+                JOIN 
+                    scores_results s ON f.fixture_id = s.fixture_id
+                JOIN 
+                    teams t ON t.team_id IN (f.team1_id, f.team2_id)
+                GROUP BY 
+                    t.team_name
+                ORDER BY 
+                    Points DESC, Won DESC, Played ASC;
+                """
 
-test = GroupManager()
+            cur.execute(query)
+            results = cur.fetchall()
 
-# TESTING API
+            # Format results as a list of dictionaries
+            standings = [
+                {
+                    "Team": result[0],
+                    "Played": result[1],
+                    "Won": result[2],
+                    "Drawn": result[3],
+                    "Lost": result[4],
+                    "Points": result[5]
+                }
+                for result in results
+            ]
 
-"""
-Add Group To Tournament Table
-# test.add_group('GROUP C', 2)
-Remove Group From Table
-test.delete_group('GROUP C')
-List Groups
-test.list_groups()
-Add Team To Group Table
-test.add_team_to_group(team_name='Team A', to_group=1)
-"""
-
-
-
-
-
+            return standings
 

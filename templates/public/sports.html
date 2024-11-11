@@ -11,24 +11,17 @@
     <section id="tournaments" class="mb-5">
         <h2 class="text-center mb-3">Current Tournaments</h2>
         <div class="row">
+            {% for tournament in tournaments %}
             <div class="col-md-4 mb-3">
                 <div class="card h-100">
                     <div class="card-body">
-                        <h5 class="card-title">Spring Sports Festival</h5>
-                        <p class="card-text">Start Date: April 5, 2024</p>
-                        <p class="card-text">End Date: April 15, 2024</p>
+                        <h5 class="card-title text-center">{{ tournament.name }}</h5>
+                        <p class="card-text text-center">Start Date: {{ tournament.start_date }} </p>
+                        <p class="card-text text-center">End Date: {{ tournament.end_date }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">National Tech Games</h5>
-                        <p class="card-text">Start Date: May 10, 2024</p>
-                        <p class="card-text">End Date: May 20, 2024</p>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 
@@ -45,18 +38,14 @@
                 </tr>
             </thead>
             <tbody>
+                {% for fixture in fixtures %}
                 <tr>
-                    <td>April 6, 2024</td>
-                    <td>Team A</td>
-                    <td>Team B</td>
-                    <td>Spring Sports Festival</td>
+                    <td>{{ fixture.date }}</td>
+                    <td>{{ fixture.team1_name }}</td>
+                    <td>{{ fixture.team2_name }}</td>
+                    <td>{{ fixture.tournament_name }}</td>
                 </tr>
-                <tr>
-                    <td>April 7, 2024</td>
-                    <td>Team C</td>
-                    <td>Team D</td>
-                    <td>Spring Sports Festival</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </section>
@@ -75,28 +64,22 @@
                 </tr>
             </thead>
             <tbody>
+                {% for game_result in game_results %}
                 <tr>
-                    <td>April 6, 2024</td>
-                    <td>Team A</td>
-                    <td>2</td>
-                    <td>Team B</td>
-                    <td>1</td>
+                    <td>{{ game_result.date }}</td>
+                    <td>{{ game_result.team1 }}</td>
+                    <td>{{ game_result.team1_score }}</td>
+                    <td>{{ game_result.team2 }}</td>
+                    <td>{{ game_result.team2_score }}</td>
                 </tr>
-                <tr>
-                    <td>April 7, 2024</td>
-                    <td>Team C</td>
-                    <td>3</td>
-                    <td>Team D</td>
-                    <td>3</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </section>
 
     <!-- Standings Section -->
     <section id="standings" class="mb-5">
-        <h2 class="text-center mb-3">Group Standings</h2>
-        <h4 class="mt-3">Group A</h4>
+        <h2 class="text-center mb-3">Team Standings</h2>
         <table class="table table-striped mb-4">
             <thead>
                 <tr>
@@ -109,22 +92,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for game_standing in game_standings %}
                 <tr>
-                    <td>Team A</td>
-                    <td>3</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>0</td>
-                    <td>7</td>
+                    <td>{{ game_standing.Team }}</td>
+                    <td>{{ game_standing.Played }}</td>
+                    <td>{{ game_standing.Won }}</td>
+                    <td>{{ game_standing.Drawn }}</td>
+                    <td>{{ game_standing.Lost }}</td>
+                    <td>{{ game_standing.Points }}</td>
                 </tr>
-                <tr>
-                    <td>Team B</td>
-                    <td>3</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>1</td>
-                    <td>4</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </section>

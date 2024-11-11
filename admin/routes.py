@@ -335,7 +335,7 @@ def update_score(fixture_id):
     with DatabaseConnection() as conn:
         cur = conn.cursor()
         cur.execute("""
-            UPDATE fixtures 
+            UPDATE scores_results 
             SET team1_score = %s, team2_score = %s 
             WHERE fixture_id = %s
         """, (team1_score, team2_score, fixture_id))
